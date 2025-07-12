@@ -14,7 +14,7 @@ function extractImports(code) {
     }
     
     // Ищем import statements
-    if (line.startsWith('import ')) {
+    if (/^import\s/.test(line)) {
       // Обрабатываем многострочные импорты
       let fullImportLine = line;
       let braceCount = 0;
