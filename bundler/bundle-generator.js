@@ -39,7 +39,6 @@ function generateBundle(graph) {
         }
       });
       
-      // Заменяю transformES6ToCommonJS на transformExportsToCommonJS
       transformedCode = transformExportsToCommonJS(transformedCode);
       
       modules += `
