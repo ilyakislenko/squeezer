@@ -27,7 +27,6 @@ function getPort() {
   return argPort || envPort || dotEnvPort || 3000;
 }
 
-const PORT = getPort();
 const DIST_DIR = path.join(__dirname, 'dist');
 
 const mimeTypes = {
@@ -47,31 +46,44 @@ const mimeTypes = {
   '.otf': 'font/otf',
 };
 
-const server = http.createServer((req, res) => {
-  let filePath = req.url.split('?')[0];
-  if (filePath === '/' || filePath === '') filePath = '/index.html';
-  const absPath = path.join(DIST_DIR, filePath);
+function startServer(port) {
+  const server = http.createServer((req, res) => {
+    let filePath = req.url.split('?')[0];
+    if (filePath === '/' || filePath === '') filePath = '/index.html';
+    const absPath = path.join(DIST_DIR, filePath);
 
-  fs.readFile(absPath, (err, data) => {
-    if (err) {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('404 Not Found');
-      return;
-    }
-    const ext = path.extname(absPath);
-    const mimeType = mimeTypes[ext] || 'application/octet-stream';
-    res.writeHead(200, { 'Content-Type': mimeType });
-    res.end(data);
+    fs.readFile(absPath, (err, data) => {
+      if (err) {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('404 Not Found');
+        return;
+      }
+      const ext = path.extname(absPath);
+      const mimeType = mimeTypes[ext] || 'application/octet-stream';
+      res.writeHead(200, { 'Content-Type': mimeType });
+      res.end(data);
+    });
   });
-});
 
-server.listen(PORT, () => {
-  const url = `http://localhost:${PORT}`;
-  console.log(`\x1b[32mDev server running at ${url}\x1b[0m`);
-  // Открываем браузер (macOS, Windows, Linux)
-  const startCmd =
-    process.platform === 'darwin' ? `open ${url}` :
-    process.platform === 'win32' ? `start ${url}` :
-    `xdg-open ${url}`;
-  exec(startCmd);
-}); 
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`\x1b[33mPort ${port} is in use, trying ${port + 1}...\x1b[0m`);
+      startServer(port + 1);
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+
+  server.listen(port, () => {
+    const url = `http://localhost:${port}`;
+    console.log(`\x1b[32mDev server running at ${url}\x1b[0m`);
+    // Открываем браузер (macOS, Windows, Linux)
+    const startCmd =
+      process.platform === 'darwin' ? `open ${url}` :
+      process.platform === 'win32' ? `start ${url}` :
+      `xdg-open ${url}`;
+    exec(startCmd);
+  });
+}
+
+startServer(getPort()); 
