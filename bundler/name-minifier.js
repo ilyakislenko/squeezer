@@ -204,6 +204,82 @@ class NameMinifier {
         
         if (globalNames.includes(name)) return true;
         
+        // Не минифицируем стандартные методы console
+        const consoleMethods = ['log', 'error', 'warn', 'info', 'debug', 'trace', 'time', 'timeEnd', 'group', 'groupEnd', 'table', 'clear', 'count', 'countReset', 'dir', 'dirxml', 'profile', 'profileEnd', 'timeLog'];
+        if (consoleMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы JSON
+        const jsonMethods = ['parse', 'stringify'];
+        if (jsonMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Math
+        const mathMethods = ['abs', 'acos', 'acosh', 'asin', 'asinh', 'atan', 'atan2', 'atanh', 'cbrt', 'ceil', 'clz32', 'cos', 'cosh', 'exp', 'expm1', 'floor', 'fround', 'hypot', 'imul', 'log', 'log1p', 'log2', 'log10', 'max', 'min', 'pow', 'random', 'round', 'sign', 'sin', 'sinh', 'sqrt', 'tan', 'tanh', 'trunc'];
+        if (mathMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Date
+        const dateMethods = ['getTime', 'getDate', 'getDay', 'getFullYear', 'getHours', 'getMilliseconds', 'getMinutes', 'getMonth', 'getSeconds', 'getTimezoneOffset', 'getUTCDate', 'getUTCDay', 'getUTCFullYear', 'getUTCHours', 'getUTCMilliseconds', 'getUTCMinutes', 'getUTCMonth', 'getUTCSeconds', 'setDate', 'setFullYear', 'setHours', 'setMilliseconds', 'setMinutes', 'setMonth', 'setSeconds', 'setTime', 'setUTCDate', 'setUTCFullYear', 'setUTCHours', 'setUTCMilliseconds', 'setUTCMinutes', 'setUTCMonth', 'setUTCSeconds', 'toDateString', 'toISOString', 'toJSON', 'toLocaleDateString', 'toLocaleString', 'toLocaleTimeString', 'toString', 'toTimeString', 'toUTCString', 'valueOf'];
+        if (dateMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Array
+        const arrayMethods = ['concat', 'copyWithin', 'entries', 'every', 'fill', 'filter', 'find', 'findIndex', 'flat', 'flatMap', 'forEach', 'includes', 'indexOf', 'join', 'keys', 'lastIndexOf', 'map', 'pop', 'push', 'reduce', 'reduceRight', 'reverse', 'shift', 'slice', 'some', 'sort', 'splice', 'toLocaleString', 'toString', 'unshift', 'values'];
+        if (arrayMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Object
+        const objectMethods = ['assign', 'create', 'defineProperty', 'defineProperties', 'entries', 'freeze', 'fromEntries', 'getOwnPropertyDescriptor', 'getOwnPropertyDescriptors', 'getOwnPropertyNames', 'getOwnPropertySymbols', 'getPrototypeOf', 'hasOwn', 'is', 'isExtensible', 'isFrozen', 'isSealed', 'keys', 'preventExtensions', 'seal', 'setPrototypeOf', 'values'];
+        if (objectMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы String
+        const stringMethods = ['anchor', 'big', 'blink', 'bold', 'charAt', 'charCodeAt', 'codePointAt', 'concat', 'endsWith', 'fixed', 'fontcolor', 'fontsize', 'includes', 'indexOf', 'italics', 'lastIndexOf', 'link', 'localeCompare', 'match', 'matchAll', 'normalize', 'padEnd', 'padStart', 'repeat', 'replace', 'replaceAll', 'search', 'slice', 'small', 'split', 'startsWith', 'strike', 'sub', 'substr', 'substring', 'sup', 'toLocaleLowerCase', 'toLocaleUpperCase', 'toLowerCase', 'toString', 'toUpperCase', 'trim', 'trimEnd', 'trimLeft', 'trimRight', 'trimStart', 'valueOf'];
+        if (stringMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Number
+        const numberMethods = ['toExponential', 'toFixed', 'toLocaleString', 'toPrecision', 'toString', 'valueOf'];
+        if (numberMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Boolean
+        const booleanMethods = ['toString', 'valueOf'];
+        if (booleanMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы RegExp
+        const regexpMethods = ['exec', 'test', 'toString'];
+        if (regexpMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Error
+        const errorMethods = ['toString', 'valueOf'];
+        if (errorMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Function
+        const functionMethods = ['apply', 'bind', 'call', 'toString'];
+        if (functionMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Map
+        const mapMethods = ['clear', 'delete', 'entries', 'forEach', 'get', 'has', 'keys', 'set', 'size', 'values'];
+        if (mapMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Set
+        const setMethods = ['add', 'clear', 'delete', 'entries', 'forEach', 'has', 'keys', 'size', 'values'];
+        if (setMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы WeakMap
+        const weakMapMethods = ['delete', 'get', 'has', 'set'];
+        if (weakMapMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы WeakSet
+        const weakSetMethods = ['add', 'delete', 'has'];
+        if (weakSetMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Symbol
+        const symbolMethods = ['toString', 'valueOf'];
+        if (symbolMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Proxy
+        const proxyMethods = ['revocable'];
+        if (proxyMethods.includes(name)) return true;
+        
+        // Не минифицируем стандартные методы Reflect
+        const reflectMethods = ['apply', 'construct', 'defineProperty', 'deleteProperty', 'get', 'getOwnPropertyDescriptor', 'getPrototypeOf', 'has', 'isExtensible', 'ownKeys', 'preventExtensions', 'set', 'setPrototypeOf'];
+        if (reflectMethods.includes(name)) return true;
+        
         // Минифицируем остальные имена
         return false;
     }
