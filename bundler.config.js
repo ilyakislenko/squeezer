@@ -3,10 +3,11 @@ module.exports = {
     output: "./dist/bundle.js", // Выходной файл
     html: "./src/index.html",   // HTML файл для обработки
     minify: true,               // Включить минификацию
+    treeShake: true,            // Включить tree shaking
     minifyOptions: {
         removeComments: true,   // Удалять комментарии
         removeWhitespace: true, // Удалять лишние пробелы
-        minifyNames: true       // Сжимать имена переменных
+        minifyNames: true       // Минифицировать имена переменных
     },
     alias: {
       "@utils": "./src/utils"   // Алиас для удобства

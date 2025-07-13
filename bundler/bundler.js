@@ -7,13 +7,23 @@ const generateBundle = require('./bundle-generator');
 const minify = require('./minifyer');
 const HtmlProcessor = require('./html-processor');
 const processEnvReplacer = require('./process-env-replacer');
+const { shakeTree } = require('./tree-shaker');
 const path = require('path');
 const fs = require('fs');
 
 const config = loadConfig();
 
 const graph = resolveDependencies(config.entry, config.alias);
-let bundle = generateBundle(graph);
+
+// Применяем tree shaking если включен
+let bundle;
+if (config.treeShake !== false) {
+    console.log('🌳 Применяем tree shaking...');
+    const shakenGraph = shakeTree(graph);
+    bundle = generateBundle(shakenGraph);
+} else {
+    bundle = generateBundle(graph);
+}
 
 // Заменяем process.env.* на значения из .env/окружения
 bundle = processEnvReplacer(bundle, config);
