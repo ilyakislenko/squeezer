@@ -1,3 +1,6 @@
+const loadEnv = require('./env-loader');
+loadEnv();
+
 const loadConfig = require('./config-loader');
 const { resolveDependencies, resolvePath } = require('./resolvers');
 const generateBundle = require('./bundle-generator');
@@ -12,7 +15,13 @@ const graph = resolveDependencies(config.entry, config.alias);
 let bundle = generateBundle(graph);
 
 if (config.minify) {
-  bundle = minify(bundle);
+  const minifyOptions = {
+    removeComments: config.minifyOptions?.removeComments !== false,
+    removeWhitespace: config.minifyOptions?.removeWhitespace !== false,
+    minifyNames: config.minifyOptions?.minifyNames !== false
+  };
+  
+  bundle = minify(bundle, minifyOptions);
 }
 
 fs.mkdirSync(path.dirname(config.output), { recursive: true });
